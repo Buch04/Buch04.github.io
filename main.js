@@ -89,7 +89,90 @@ function popolateModal(n) {
         .then(response => response.json())
         .then(response => {
             document.getElementById('modalTitle').innerText = response.drinks[n].strDrink;
-
+            document.getElementById('guide').innerText = response.drinks[n].strInstructionsIT;
+            var i = 1;
+            switch (i) {
+                case 1:
+                    if (response.drinks[n].strIngredient1 == null) break;
+                    document.getElementById('tBody').innerHTML =
+                        `<tr>
+                        <th scope="row">1</th>
+                        <td id="drinkType1"></td>
+                        <td id="drinkTypeQuantity1"></td>
+                        </tr>`;
+                    document.getElementById('drinkType1').innerText = response.drinks[n].strIngredient1;
+                    document.getElementById('drinkTypeQuantity1').innerText = response.drinks[n].strMeasure1;
+                case 2:
+                    if (response.drinks[n].strIngredient2 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">2</th>
+                        <td id="drinkType2"></td>
+                        <td id="drinkTypeQuantity2"></td>
+                        </tr>`;
+                    document.getElementById('drinkType2').innerText = response.drinks[n].strIngredient2;
+                    document.getElementById('drinkTypeQuantity2').innerText = response.drinks[n].strMeasure2;
+                case 3:
+                    if (response.drinks[n].strIngredient3 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">3</th>
+                        <td id="drinkType3"></td>
+                        <td id="drinkTypeQuantity3"></td>
+                        </tr>`;
+                    document.getElementById('drinkType3').innerText = response.drinks[n].strIngredient3;
+                    document.getElementById('drinkTypeQuantity3').innerText = response.drinks[n].strMeasure3;
+                case 4:
+                    if (response.drinks[n].strIngredient4 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                            <th scope="row">4</th>
+                            <td id="drinkType4"></td>
+                            <td id="drinkTypeQuantity4"></td>
+                            </tr>`;
+                    document.getElementById('drinkType4').innerText = response.drinks[n].strIngredient4;
+                    document.getElementById('drinkTypeQuantity4').innerText = response.drinks[n].strMeasure4;
+                case 5:
+                    if (response.drinks[n].strIngredient5 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">5</th>
+                        <td id="drinkType5"></td>
+                        <td id="drinkTypeQuantity5"></td>
+                        </tr>`;
+                    document.getElementById('drinkType5').innerText = response.drinks[n].strIngredient5;
+                    document.getElementById('drinkTypeQuantity5').innerText = response.drinks[n].strMeasure5;
+                case 6:
+                    if (response.drinks[n].strIngredient6 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">6</th>
+                        <td id="drinkType6"></td>
+                        <td id="drinkTypeQuantity6"></td>
+                        </tr>`;
+                    document.getElementById('drinkType6').innerText = response.drinks[n].strIngredient6;
+                    document.getElementById('drinkTypeQuantity6').innerText = response.drinks[n].strMeasure6;
+                case 7:
+                    if (response.drinks[n].strIngredient7 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">7</th>
+                        <td id="drinkType7"></td>
+                        <td id="drinkTypeQuantity7"></td>
+                        </tr>`;
+                    document.getElementById('drinkType7').innerText = response.drinks[n].strIngredient7;
+                    document.getElementById('drinkTypeQuantity7').innerText = response.drinks[n].strMeasure7;
+                default:
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">1</th>
+                        <td id="drinkType"></td>
+                        <td id="drinkTypeQuantity"></td>
+                        </tr>`;
+                    document.getElementById('drinkType').innerText = 'nessun elemento';
+                    document.getElementById('drinkTypeQuantity').innerText = 'nessun elemento';
+                    break;
+            }
         })
-        .catch(err => console.error(err));
+        .catch(err => console.error(err))
 }
