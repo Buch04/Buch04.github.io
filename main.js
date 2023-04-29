@@ -25,6 +25,7 @@ function searchType(n) {
 function popolateCard() {
     var i = 0;
     research = 'https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '';
+    document.getElementById("mainPage").textContent = null;
     document.getElementById("caricamento").className = "dots position-absolute top-50 start-50";
     fetch('https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '', { method: "GET" })
         .then(response => response.json())
