@@ -1,12 +1,28 @@
 let type = 'search.php?s=';
 let research;
 let search = document.getElementById('search');
+var data = new Date();
+var gg, mm, aaaa;
+gg = data.getDate();
+mm = data.getMonth();
+var month = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct', 'Nov', 'Dec']; 
 
 search.addEventListener("keydown", function (e) {
     if (e.code == "Enter") e.preventDefault();
 });
 
 // https://www.thecocktaildb.com/api/json/v1/1/random.php
+
+fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.value + '', { method: "GET" })
+        .then(response => response.json())
+        .then(response => {
+            document.getElementById("casualTitle").innerText = response.drinks[0].strDrink;
+            document.getElementById("casualDescription").innerText = response.drinks[0].strInstructionsIT;
+            document.getElementById("casualDate").innerText = gg + " " + month[mm];
+
+        })
+        .catch(err => console.error(err));
+
 
 function searchType(n) {
     switch (n) {
@@ -25,6 +41,10 @@ function searchType(n) {
     }
 }
 
+function ref(){
+    location.reload();
+
+}
 
 function popolateCard(e) {
     var i = 0;
@@ -40,7 +60,7 @@ function popolateCard(e) {
                     document.getElementById('tab').innerHTML =
                         `<div class="col">
                         <a data-bs-toggle="modal" data-bs-target="#exampleModal"> 
-                            <div class="card h-100" onclick = "popolateModal(`+ index + `)" >
+                            <div class="card h-100" onclick = "popolateModal(`+ index + `)" style="cursor: pointer;">
                             <img id="image` + index + `" class="card-img-top h-45" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title" id="name` + index + `"></h5>
@@ -62,7 +82,7 @@ function popolateCard(e) {
                     document.getElementById('tab').innerHTML +=
                         `<div class="col">
                             <a data-bs-toggle="modal" data-bs-target="#exampleModal"> 
-                            <div class="card h-100" onclick = "popolateModal(`+ index + `)" >
+                            <div class="card h-100" onclick = "popolateModal(`+ index + `)" style="cursor: pointer;">
                             <img id="image` + index + `" class="card-img-top h-45" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title" id="name` + index + `"></h5>
