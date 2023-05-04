@@ -23,6 +23,16 @@ fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.
         })
         .catch(err => console.error(err));
 
+fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.value + '', { method: "GET" })
+    .then(response => response.json())
+    .then(response => {
+        document.getElementById("casualAnalTitle").innerText = response.drinks[0].strDrink;
+        document.getElementById("casualAnalDate").innerText = gg + " " + month[mm];
+        document.getElementById("casualAnalImg").src = response.drinks[0].strDrinkThumb;
+
+    })
+    .catch(err => console.error(err));
+
 
 function searchType(n) {
     switch (n) {
@@ -55,8 +65,8 @@ function popolateCard(e) {
         .then(response => {
             response.drinks.forEach((element, index) => {
                 if (index == 0) {
-                    document.getElementById("caricamento").className = "";
-                    document.getElementById('tab').innerHTML = "";
+                    document.getElementById("caricamento").className = null;
+                    document.getElementById('tab').innerHTML = null;
                 }
                     document.getElementById('tab').innerHTML +=
                         `<div class="col">
@@ -82,7 +92,10 @@ function popolateCard(e) {
                     document.getElementById("cardFooter" + index).innerText += ' ' + response.drinks[index].dateModified;
                 });
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            window.alert('ricerca non trovata');
+            location.reload();
+        });
 }
 
 function popolateModal(n) {
@@ -163,6 +176,16 @@ function popolateModal(n) {
                         </tr>`;
                     document.getElementById('drinkType7').innerText = response.drinks[n].strIngredient7;
                     document.getElementById('drinkTypeQuantity7').innerText = response.drinks[n].strMeasure7;
+                    case 8:
+                    if (response.drinks[n].strIngredient8 == null) break;
+                    document.getElementById('tBody').innerHTML +=
+                        `<tr>
+                        <th scope="row">8</th>
+                        <td id="drinkType8"></td>
+                        <td id="drinkTypeQuantity8"></td>
+                        </tr>`;
+                    document.getElementById('drinkType8').innerText = response.drinks[n].strIngredient8;
+                    document.getElementById('drinkTypeQuantity8').innerText = response.drinks[n].strMeasure8;
                 default:
                     document.getElementById('tBody').innerHTML +=
                         `<tr>
