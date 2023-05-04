@@ -17,8 +17,8 @@ fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.
         .then(response => response.json())
         .then(response => {
             document.getElementById("casualTitle").innerText = response.drinks[0].strDrink;
-            document.getElementById("casualDescription").innerText = response.drinks[0].strInstructionsIT;
             document.getElementById("casualDate").innerText = gg + " " + month[mm];
+            document.getElementById("casualImg").src = response.drinks[0].strDrinkThumb;
 
         })
         .catch(err => console.error(err));
@@ -43,7 +43,6 @@ function searchType(n) {
 
 function ref(){
     location.reload();
-
 }
 
 function popolateCard(e) {
@@ -57,28 +56,8 @@ function popolateCard(e) {
             response.drinks.forEach((element, index) => {
                 if (index == 0) {
                     document.getElementById("caricamento").className = "";
-                    document.getElementById('tab').innerHTML =
-                        `<div class="col">
-                        <a data-bs-toggle="modal" data-bs-target="#exampleModal"> 
-                            <div class="card h-100" onclick = "popolateModal(`+ index + `)" style="cursor: pointer;">
-                            <img id="image` + index + `" class="card-img-top h-45" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title" id="name` + index + `"></h5>
-                                    <p class="card-text" id="description` + index + `">This is a longer card with supporting text below as a natural lead-in to
-                                        additional content. This content is a little bit longer.</p>
-                                </div>
-                                <div class="card-footer">
-                                    <small id="cardFooter` + index + `" class="text-muted">Last update </small>
-                                </div>
-                            </div>
-                            </a>
-                        </div>`;
-
-                    document.getElementById("image" + index).src = response.drinks[index].strDrinkThumb;
-                    document.getElementById("name" + index).innerText = response.drinks[index].strDrink;
-                    document.getElementById("description" + index).innerText = response.drinks[index].strAlcoholic;
-                    document.getElementById("cardFooter" + index).innerText += ' ' + response.drinks[index].dateModified;
-                } else {
+                    document.getElementById('tab').innerHTML = "";
+                }
                     document.getElementById('tab').innerHTML +=
                         `<div class="col">
                             <a data-bs-toggle="modal" data-bs-target="#exampleModal"> 
@@ -101,12 +80,9 @@ function popolateCard(e) {
                     document.getElementById("name" + index).innerText = response.drinks[index].strDrink;
                     document.getElementById("description" + index).innerText = response.drinks[index].strAlcoholic;
                     document.getElementById("cardFooter" + index).innerText += ' ' + response.drinks[index].dateModified;
-                }
-            });
-
+                });
         })
         .catch(err => console.error(err));
-
 }
 
 function popolateModal(n) {
