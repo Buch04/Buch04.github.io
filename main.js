@@ -1,5 +1,5 @@
 let type = 'search.php?s=';
-let research;
+let research = [];
 let search = document.getElementById('search');
 var data = new Date();
 var gg, mm, aaaa;
@@ -13,9 +13,10 @@ search.addEventListener("keydown", function (e) {
 
 // https://www.thecocktaildb.com/api/json/v1/1/random.php
 
-fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.value + '', { method: "GET" })
+fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/', { method: "GET" })
         .then(response => response.json())
         .then(response => {
+            research[0] = response.drinks[0].strDrink;
             document.getElementById("casualTitle").innerText = response.drinks[0].strDrink;
             document.getElementById("casualDate").innerText = gg + " " + month[mm];
             document.getElementById("casualImg").src = response.drinks[0].strDrinkThumb;
@@ -23,9 +24,10 @@ fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.
         })
         .catch(err => console.error(err));
 
-fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/' + type + search.value + '', { method: "GET" })
+fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/', { method: "GET" })
     .then(response => response.json())
     .then(response => {
+        research[1] = response.drinks[0].strDrink;
         document.getElementById("casualAnalTitle").innerText = response.drinks[0].strDrink;
         document.getElementById("casualAnalDate").innerText = gg + " " + month[mm];
         document.getElementById("casualAnalImg").src = response.drinks[0].strDrinkThumb;
@@ -57,7 +59,7 @@ function ref(){
 
 function popolateCard(e) {
     var i = 0;
-    research = 'https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '';
+    research[2] = 'https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '';
     document.getElementById("mainPage").innerHTML = "";
     document.getElementById("caricamento").className = "dots position-absolute top-50 start-50";
     fetch('https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '', { method: "GET" })
@@ -92,6 +94,7 @@ function popolateCard(e) {
                     document.getElementById("cardFooter" + index).innerText += ' ' + response.drinks[index].dateModified;
                 });
         })
+        .then(response => console.log(response))
         .catch(err => {
             window.alert('ricerca non trovata');
             location.reload();
@@ -99,7 +102,8 @@ function popolateCard(e) {
 }
 
 function popolateModal(n) {
-    fetch(research, { method: "GET" })
+    
+    fetch(research[2], { method: "GET" })
         .then(response => response.json())
         .then(response => {
             document.getElementById('modalTitle').innerText = response.drinks[n].strDrink;
