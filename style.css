@@ -31,9 +31,3 @@ body {
         background-position: 0% 50%, 50% 50%, 100% 100%;
     }
 }
-
-.searchError{
-    color: #ff0000;
-    border-color: #ff0000;
-    background-color: #ff0000;
-}
