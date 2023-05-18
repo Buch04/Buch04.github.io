@@ -5,7 +5,7 @@ var data = new Date();
 var gg, mm, aaaa;
 gg = data.getDate();
 mm = data.getMonth();
-var month = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct', 'Nov', 'Dec']; 
+var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 search.addEventListener("keydown", function (e) {
     if (e.code == "Enter") e.preventDefault();
@@ -13,25 +13,24 @@ search.addEventListener("keydown", function (e) {
 
 // https://www.thecocktaildb.com/api/json/v1/1/random.php
 
+// output random drink home page
 fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/', { method: "GET" })
-        .then(response => response.json())
-        .then(response => {
-            research[0] = response.drinks[0].strDrink;
-            document.getElementById("casualTitle").innerText = response.drinks[0].strDrink;
-            document.getElementById("casualDate").innerText = gg + " " + month[mm];
-            document.getElementById("casualImg").src = response.drinks[0].strDrinkThumb;
-
-        })
-        .catch(err => console.error(err));
+    .then(response => response.json())
+    .then(response => {
+        document.getElementById("casualTitle").innerText = response.drinks[0].strDrink;
+        document.getElementById("casualDate").innerText = gg + " " + month[mm];
+        document.getElementById("casualImg").src = response.drinks[0].strDrinkThumb;
+        research[0] = 'www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + response.drinks[0].idDrink + '';
+    })
+    .catch(err => console.error(err));
 
 fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/', { method: "GET" })
     .then(response => response.json())
     .then(response => {
-        research[1] = response.drinks[0].strDrink;
         document.getElementById("casualAnalTitle").innerText = response.drinks[0].strDrink;
         document.getElementById("casualAnalDate").innerText = gg + " " + month[mm];
         document.getElementById("casualAnalImg").src = response.drinks[0].strDrinkThumb;
-
+        research[1] = 'www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' + response.drinks[0].idDrink + '';
     })
     .catch(err => console.error(err));
 
@@ -39,30 +38,30 @@ fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php/', { method: "GET"
 function searchType(n) {
     switch (n) {
         case 2:
-            type = 'filter.php?i=';
+            type = 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=';
             search.placeholder = 'search by ingredient';
             break;
         case 3:
-            type = 'search.php?f=';
+            type = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?f=';
             search.placeholder = 'search by first letter';
             break;
         default:
-            type = 'search.php?s=';
+            type = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
             search.placeholder = 'search by name';
             break;
     }
 }
 
-function ref(){
+function ref() {
     location.reload();
 }
 
 function popolateCard(e) {
-    var i = 0;
-    research[2] = 'https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '';
+    type = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+    research[2] = type + search.value;
     document.getElementById("mainPage").innerHTML = "";
     document.getElementById("caricamento").className = "dots position-absolute top-50 start-50";
-    fetch('https://www.thecocktaildb.com/api/json/v1/1/' + type + search.value + '', { method: "GET" })
+    fetch(type + search.value, { method: "GET" })
         .then(response => response.json())
         .then(response => {
             response.drinks.forEach((element, index) => {
@@ -70,8 +69,8 @@ function popolateCard(e) {
                     document.getElementById("caricamento").className = null;
                     document.getElementById('tab').innerHTML = null;
                 }
-                    document.getElementById('tab').innerHTML +=
-                        `<div class="col">
+                document.getElementById('tab').innerHTML +=
+                    `<div class="col">
                             <a data-bs-toggle="modal" data-bs-target="#exampleModal"> 
                             <div class="card h-100" onclick = "popolateModal(`+ index + `)" style="cursor: pointer;">
                             <img id="image` + index + `" class="card-img-top h-45" alt="...">
@@ -87,12 +86,12 @@ function popolateCard(e) {
                             </a>
                         </div>`;
 
-                    console.log(response.drinks[index].strDrink);
-                    document.getElementById("image" + index).src = response.drinks[index].strDrinkThumb;
-                    document.getElementById("name" + index).innerText = response.drinks[index].strDrink;
-                    document.getElementById("description" + index).innerText = response.drinks[index].strAlcoholic;
-                    document.getElementById("cardFooter" + index).innerText += ' ' + response.drinks[index].dateModified;
-                });
+                console.log(response.drinks[index].strDrink);
+                document.getElementById("image" + index).src = response.drinks[index].strDrinkThumb;
+                document.getElementById("name" + index).innerText = response.drinks[index].strDrink;
+                document.getElementById("description" + index).innerText = response.drinks[index].strAlcoholic;
+                document.getElementById("cardFooter" + index).innerText += ' ' + response.drinks[index].dateModified;
+            });
         })
         .then(response => console.log(response))
         .catch(err => {
@@ -102,12 +101,14 @@ function popolateCard(e) {
 }
 
 function popolateModal(n) {
-    
+
     fetch(research[2], { method: "GET" })
         .then(response => response.json())
         .then(response => {
             document.getElementById('modalTitle').innerText = response.drinks[n].strDrink;
-            document.getElementById('guide').innerText = response.drinks[n].strInstructionsIT;
+            document.getElementById('strCategory').innerText = "Category: " + response.drinks[n].strCategory;
+            document.getElementById('strGlass').innerText = "Glass: " + response.drinks[n].strGlass;
+            document.getElementById('guide').innerText = response.drinks[n].strInstructions;
             var i = 1;
             switch (i) {
                 case 1:
@@ -180,7 +181,7 @@ function popolateModal(n) {
                         </tr>`;
                     document.getElementById('drinkType7').innerText = response.drinks[n].strIngredient7;
                     document.getElementById('drinkTypeQuantity7').innerText = response.drinks[n].strMeasure7;
-                    case 8:
+                case 8:
                     if (response.drinks[n].strIngredient8 == null) break;
                     document.getElementById('tBody').innerHTML +=
                         `<tr>
